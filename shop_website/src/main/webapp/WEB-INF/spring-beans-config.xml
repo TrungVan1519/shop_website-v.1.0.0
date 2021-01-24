@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- Annotation helper -->
+	
+		<!-- enable annotations in project (is required) -->
+		<mvc:annotation-driven enable-matrix-variables="true"/> 
+		
+		<!-- scan all annotations in project -->
+		<context:component-scan base-package="com.dauXanh.*"/> 
+		
+	<!-- Annotation helper -->
+	
+	
+	
+	<!-- ViewResolver: auto mapping views folder -->
+		<bean id="viewResolver" 
+			class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="prefix" value="/views/"/>
+			<property name="suffix" value=".jsp"/>
+		</bean>
+	
+	
+	
+	<!-- Static resources: serve static resources via ${pageContext.request.contextPath}/public/** -->
+		<mvc:resources location="/public/" mapping="/public/**"/>
+	
+	
+	
+	<!-- Database connection -->
+	
+		<!-- Data source -->
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	        <property name="url" 
+	        	value="jdbc:mysql://127.0.0.1:3306/online_shop?allowPublicKeyRetrieval=true&amp;useSSL=false"/>
+	        <property name="username" value="root"/>
+	        <property name="password" value="1519"/>
+	    </bean>
+	
+		<!-- Hibernate session factory -->
+	    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+	        <property name="dataSource" ref="dataSource"/>
+			<property name="packagesToScan" value="com.dauXanh.entity"/>
+	        <property name="hibernateProperties">
+	        	<props>
+	        		<prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
+	        		<prop key="hibernate.show_sql">true</prop>
+	        		<prop key="hibernate.format_sql">true</prop>
+	        	</props>
+	        </property>
+	    </bean>
+	    
+	    <!-- Spring transaction -->
+	    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+	        <property name="sessionFactory" ref="sessionFactory"/>
+	    </bean>
+	
+	    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+	<!-- Database connection -->
+	
+	
+	
+	<!-- File Uploading -->
+		<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>  
+	
+	
+	
+	<!-- Reading properties files in src/main/resources -->
+		<context:property-placeholder location="classpath:info.properties"/>
+	
+	
+	
+	<!-- Importing xml files else in src/main/resources -->
+		<import resource="classpath:ioc-container.xml"/>
+    
+</beans>
+ 

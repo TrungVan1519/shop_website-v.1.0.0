@@ -1,0 +1,41 @@
+@charset "ISO-8859-1";
+
+/* style */
+.pointer-cursor:hover {
+	cursor: pointer;
+}
+
+/* font-size */
+.material-header {
+	font-size: 48px;
+}
+
+.material-header-primary {
+	font-size: 36px;
+}
+
+.material-header-secondary {
+	font-size: 24px;
+}
+
+.material-header-tertiary {
+	font-size: 12px;
+}
+
+/* text-color */
+.material-active {
+	color: #E4827F;
+}
+
+.material-white-color {
+	color: #fff;
+}
+
+.material-grey-color {
+	color: #7f8c8d;
+}
+
+/* alignment */
+.material-text-center {
+	text-align: center;
+}
